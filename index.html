@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Andres Santilli Business Card</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="container">
+  <div class="card-container">
+   <div class="card idle">
+      <div class="card-front">
+        <div class="info">
+          <div id="name-job">
+            <h1>Andres Santilli</h1> 
+            <h2>Electrical Engineer & Software Developer</h2>
+          </div>
+          <p class="skills">👨🏻‍💻 Skills: C/C++, HTML, CSS, JavaScript, React, Vite,</p> <br>
+          <p class="skills-cont">Express, Node.js, SQL, Python, Typescript, Swift</p> <br>
+          <p class="languages">👨🏻‍💻 Languages: English, Spanish</p> <br> <br>
+          <p class="description">I also enjoy game development and landscape photography!</p> <br> <br>
+          <div id="contacts">
+            <p>Contact:</p><a id="email" href="mailto:ing.santilli37@gmail.com">ing.santilli37@gmail.com</a>  <br>
+            <br> <br>
+            <a href="https://www.linkedin.com/in/andres-santilli/" target="_blank"><img class="icon" src="assets/linkedin.png" id="linkedin-icon"></a>
+            <a href="https://github.com/devAndrew37" target="_blank"><img class="icon" src="assets/github.png" id="github-icon"></a> 
+            <a href="https://www.instagram.com/workshopgraphy" target="_blank"><img class="icon" src="assets/workshopgraphy.png" id="instagram-icon"></a>
+          </div>
+          <br>
+        </div>
+        <div class="portrait" id="portrait">
+         <img id="foto" src="assets/profile.jpeg" alt="Profile Photo">
+        </div>  
+      </div>
+      <div class="card-back">
+        <img id="back-image">
+      </div>
+  </div>
+  <img src="assets/swipe-card.gif" alt="" class="swipe-card transparent">
+  <span class="swipe-text"></span>
+  </div>
+<div class="project-container">
+  <h2 class="h2-project">Portfolio</h2>
+  <div class="project-card project1" onmouseenter="changeBackground(1)" onmouseleave="removeBackground()">
+    <h2 class="h2-projectcard1">Battle Memory Pokemon Game</h2>
+    <div class="text-container">
+    <img src="assets/left.png" alt="left arrow" class="arrow-icon1-left none project1-arrow-left" onclick="moveLeft(1)">
+    <p class="p-projectcard1">A retro Pokemon memory game where you match pairs of Pokemon cards, OG battles included. Built on React</p>
+    <img src="assets/right.png" alt="right arrow" class="arrow-icon1-right none project1-arrow-right" onclick="moveRight(1)">
+    </div>
+  </div>
+  <div class="project-card project2" onmouseenter="changeBackground(2)" onmouseleave="removeBackground()">
+    <h2 class="h2-projectcard2">Blackjackscript Casino</h2>
+    <div class="text-container">
+    <img src="assets/left.png" alt="left arrow" class="arrow-icon2-left none project2-arrow-left" onclick="moveLeft(2)">
+    <p class="p-projectcard2" style="position: relative; top: 10px;">Blackjack game built completely on Javascript</p>
+    <img src="assets/right.png" alt="right arrow" class="arrow-icon2-right none project2-arrow-right" onclick="moveRight(2)">
+    </div>
+  </div>
+  <div class="project-card project3" onmouseenter="changeBackground(3)" onmouseleave="removeBackground()">
+    <h2 class="h2-projectcard3">Pokedex App</h2>
+    <div class="text-container">
+    <img src="assets/left.png" alt="left arrow" class="arrow-icon2-left none project3-arrow-left" onclick="moveLeft(3)">
+    <p class="p-projectcard3" style="position: relative; top: 10px;">Pokedex app built on React using the Pokemon API</p>
+    <img src="assets/right.png" alt="right arrow" class="arrow-icon2-right none project3-arrow-right" onclick="moveRight(3)">
+    </div>
+</div>
+</div>
+<div class="container-more none">
+  <span class="p-text-more1"></span>
+  <span class="p-text-more2"></span>
+  <span class="p-text-more3"></span>
+  <span class="p-text-more4"></span>
+  <span class="p-text-more5"></span>
+  <span class="p-text-more6"></span>
+  <br>
+  <a href="https://github.com/devAndrew37"><img src="assets/github.png" alt="github" class="more-icon none"></a>
+</div>
+</div>
+</body>
+<script src="script.js"></script>
+</html>
