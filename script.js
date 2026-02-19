@@ -131,7 +131,7 @@ if (card) {
 	card.classList.remove("left");
 	backImage.src = "assets/doge1.png";
 	setTimeout(() => {
-	  backImage.src = "assets/doge2.webp";	
+	  backImage.src = "assets/doge2.PNG";	
 	}, 500);
 	setTimeout(() => {
 		//download.play();
