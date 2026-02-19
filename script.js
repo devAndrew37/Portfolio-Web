@@ -129,10 +129,9 @@ if (card) {
 	if (e.target.closest('#contacts a') || clickCardFlag) return;
 	clickCardFlag = true;
 	card.classList.remove("left");
-	const randomImage = ["assets/doge1.png", "assets/doge2.webp"];
 	backImage.src = "assets/doge1.png";
 	setTimeout(() => {
-	  backImage.src = "assets/doge2.png";	
+	  backImage.src = "assets/doge2.webp";	
 	}, 500);
 	setTimeout(() => {
 		//download.play();
