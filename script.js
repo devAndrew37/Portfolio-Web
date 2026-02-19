@@ -17,6 +17,7 @@ const font6 = document.getElementById("contacts");
 const font7 = document.querySelector(".h2-project");
 const photo = document.getElementById("foto");
 const email = document.getElementById("email");
+const github = document.getElementById("github-icon");
 const border = document.querySelector(".card-container");
 const h2Project1 = document.querySelector(".h2-projectcard1");
 const h2Project2 = document.querySelector(".h2-projectcard2");
@@ -251,6 +252,7 @@ function changePhotoDelayed() {
 		font7.classList.add("changed");
 		email.classList.add("changed");
 		moreProjectsContainer.classList.add("changed");
+		github.src = "assets/github-green.png";
 		moreProjectsIcon.src = "assets/github-green.png";
 		border.style.borderColor = "white";
 		project1.classList.add("change-card");
@@ -300,6 +302,7 @@ function originalPhoto() {
 	font7.classList.remove("changed");
 	moreProjectsContainer.classList.remove("changed");
 	moreProjectsIcon.src = "assets/github.png";
+	github.src = "assets/github.png";
 	email.classList.remove("changed");
 	border.style.borderColor = "black";
 	project1.classList.remove("change-card");
