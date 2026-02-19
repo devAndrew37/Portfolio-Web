@@ -78,11 +78,24 @@ let project3Flag = false;
 let moreProjectsFlag = false;
 let typingFlag = false;
 let sequenceFlag = false;
+let sequenceStartedFlag = false;
 let photoTimeout;
 let timeout1;
 let timeout2;
 let timeout3;
 let timeout4;
+
+function updateIconImages() {
+  const isMobile = window.matchMedia("(max-width: 600px)").matches;
+  document.querySelectorAll('.arrow-icon1-left, .arrow-icon2-left').forEach(img => {
+    img.src = isMobile ? "assets/left-black.png" : "assets/left.png";
+  });
+  document.querySelectorAll('.arrow-icon1-right, .arrow-icon2-right').forEach(img => {
+	img.src = isMobile ? "assets/right-black.png" : "assets/right.png";
+  });
+}
+window.addEventListener('resize', updateIconImages);
+window.addEventListener('DOMContentLoaded', updateIconImages);
 
 document.body.addEventListener("mousemove", (e) => {
 	if (e.target.closest(".project1") || e.target.closest(".project2") || e.target.closest(".project3")) return;
@@ -146,11 +159,13 @@ if (card) {
 project1.addEventListener("mouseleave", () => {
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
+	sequenceFlag = true;
 	setTimeout(() => {
 		project1.classList.add("move-project");
 		project2.classList.add("move-project");
 		project3.classList.add("move-project");
 		moreProjectsFlag = true;
+		changePhotoDelayed();
 		moreProjects();
 	}, 1000);
 	}
@@ -159,11 +174,13 @@ project1.addEventListener("mouseleave", () => {
 project2.addEventListener("mouseleave", () => {
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
+	sequenceFlag = true;
 	setTimeout(() => {
 		project1.classList.add("move-project");
 		project2.classList.add("move-project");
 		project3.classList.add("move-project");
 		moreProjectsFlag = true;
+		changePhotoDelayed();
 		moreProjects();
 	}, 1000);
 	}
@@ -172,11 +189,13 @@ project2.addEventListener("mouseleave", () => {
 project3.addEventListener("mouseleave", () => {
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
+	sequenceFlag = true;
 	setTimeout(() => {
 		project1.classList.add("move-project");
 		project2.classList.add("move-project");
 		project3.classList.add("move-project");
 		moreProjectsFlag = true;
+		changePhotoDelayed();
 		moreProjects();
 	}, 1000);
 	}
@@ -188,8 +207,6 @@ async function delay(ms) {
 
 async function moreProjects() {
 	await delay(500);
-	changePhotoDelayed();
-	sequenceFlag = true;
 	typingFlag = true;
     typing.volume = 0.4;
     moreProjectsContainer.classList.remove("none");
@@ -223,12 +240,16 @@ async function moreProjects() {
     }, 100);
 	setTimeout(() => {
 		sequenceFlag = false;
+		sequenceStartedFlag = false;
 		originalPhoto();
 	}, 17000);
 }
 
 function changePhotoDelayed() {
-	if (photoChanged || sequenceFlag) return;
+	if (photoChanged || sequenceStartedFlag) return;
+	if (sequenceFlag) {
+		sequenceStartedFlag = true;
+	}
 	photoChanged = true;
 	setTimeout(() => {
 		if (swipeFlag) swipeGif.src = "assets/swipe-white.png";
@@ -241,7 +262,8 @@ function changePhotoDelayed() {
 		photo.src = "assets/smile.jpg";
 		dukeRock.volume = 0.2;
 		dukeRock.play();
-		document.body.style.background = "radial-gradient(circle at 30%, #232526 0%, #414345 70%, #000 100%)";
+		document.body.classList.remove("normal-background");
+		document.body.classList.add("duke-background");
 		font1.classList.add("changed");
 		font2.classList.add("changed");
 		font3.classList.add("changed");
@@ -309,7 +331,8 @@ function originalPhoto() {
 	project3.classList.remove("change-card");
 	cardFront.classList.remove("change-card");
 	cardBack.classList.remove("change-card");
-	document.body.style.background = "linear-gradient(270deg, #8bc5cd, #5a9ca4, #297383)";
+	document.body.classList.remove("duke-background");
+	document.body.classList.add("normal-background");
 }
 
 function backgroundTransition(project, direction) {
@@ -355,20 +378,23 @@ async function changeBackground(projectNumber) {
 	project1.classList.add("selected-card");
 	project2.classList.add("transparent-card");
 	project3.classList.add("transparent-card");
-	document.body.style.backgroundImage = "url('assets/project1-a.png')";
-	document.body.style.backgroundSize = "110%";
+	document.body.classList.remove("background-change-1d");
+	document.body.classList.add("background-change-1a");
 	backgroundTransition(1, "left");
 	timeout1 = setTimeout(() => {
 		backgroundTransition(1, "right");
-		document.body.style.backgroundImage = "url('assets/project1-b.png')";
+		document.body.classList.remove("background-change-1a");
+		document.body.classList.add("background-change-1b");
 	}, 2500);
 	timeout2 = setTimeout(() => {
 		backgroundTransition(1, "left");
-		document.body.style.backgroundImage = "url('assets/project1-c.png')";
+		document.body.classList.remove("background-change-1b");
+		document.body.classList.add("background-change-1c");
 	}, 5000);
 	timeout3 = setTimeout(() => {
 		backgroundTransition(1, "right");
-		document.body.style.backgroundImage = "url('assets/project1-d.png')";
+		document.body.classList.remove("background-change-1c");
+		document.body.classList.add("background-change-1d");
 	}, 7500);
 	timeout4 = setTimeout(() => {
 		changeBackground(1);
@@ -382,16 +408,18 @@ async function changeBackground(projectNumber) {
 		project3.classList.add("transparent-card");
 		project2ArrowLeft.classList.remove("none");
 		project2ArrowRight.classList.remove("none");
-		document.body.style.backgroundImage = "url('assets/project2-a.png')";
-		document.body.style.backgroundSize = "110%";
+		document.body.classList.remove("background-change-2c");
+		document.body.classList.add("background-change-2a");
 		backgroundTransition(2, "left");
 		timeout1 = setTimeout(() => {
 			backgroundTransition(2, "right");
-			document.body.style.backgroundImage = "url('assets/project2-b.png')";
+			document.body.classList.remove("background-change-2a");
+			document.body.classList.add("background-change-2b");
 		}, 4000);
 		timeout2 = setTimeout(() => {
 			backgroundTransition(2, "left");
-			document.body.style.backgroundImage = "url('assets/project2-c.png')";
+			document.body.classList.remove("background-change-2b");
+			document.body.classList.add("background-change-2c");
 		}, 8000);
 		timeout3 = setTimeout(() => {
 			changeBackground(2);
@@ -405,20 +433,23 @@ async function changeBackground(projectNumber) {
 		project1.classList.add("transparent-card");
 		project3ArrowLeft.classList.remove("none");
 		project3ArrowRight.classList.remove("none");
-		document.body.style.backgroundImage = "url('assets/project3-a.png')";
-		document.body.style.backgroundSize = "110%";
+		document.body.classList.remove("background-change-3d");
+		document.body.classList.add("background-change-3a");
 		backgroundTransition(3, "left");
 		timeout1 = setTimeout(() => {
 			backgroundTransition(3, "right");
-			document.body.style.backgroundImage = "url('assets/project3-b.png')";
+			document.body.classList.remove("background-change-3a");
+			document.body.classList.add("background-change-3b");
 		}, 2500);
 		timeout2 = setTimeout(() => {
 			backgroundTransition(3, "left");
-			document.body.style.backgroundImage = "url('assets/project3-c.png')";
+			document.body.classList.remove("background-change-3b");
+			document.body.classList.add("background-change-3c");
 		}, 5000);
 		timeout3 = setTimeout(() => {
 			backgroundTransition(3, "right");
-			document.body.style.backgroundImage = "url('assets/project3-d.png')";
+			document.body.classList.remove("background-change-3c");
+			document.body.classList.add("background-change-3d");
 		}, 7500);
 		timeout4 = setTimeout(() => {
 			changeBackground(3);
@@ -559,6 +590,17 @@ function removeBackground() {
 	setTimeout(() => {
 		card.classList.remove("left");
 	}, 2000);
+	document.body.classList.remove("background-change-1a");
+	document.body.classList.remove("background-change-1b");
+	document.body.classList.remove("background-change-1c");
+	document.body.classList.remove("background-change-1d");
+	document.body.classList.remove("background-change-2a");
+	document.body.classList.remove("background-change-2b");
+	document.body.classList.remove("background-change-2c");
+	document.body.classList.remove("background-change-3a");
+	document.body.classList.remove("background-change-3b");
+	document.body.classList.remove("background-change-3c");
+	document.body.classList.remove("background-change-3d");	
     document.body.classList.remove("background-transition-right");
 	document.body.classList.remove("background-transition-left");
     document.body.classList.remove("background-transition-right-2");
@@ -579,8 +621,6 @@ function removeBackground() {
 	cardFront.classList.remove("transparent-card");
 	cardBack.classList.remove("transparent-card");
 	photo.src = "assets/profile.jpeg";
-	document.body.style.backgroundImage = "none";
-	document.body.style.background = "linear-gradient(270deg, #8bc5cd, #5a9ca4, #297383)";
 	project1.classList.remove("selected-card");
 	project2.classList.remove("selected-card");
 	project3.classList.remove("selected-card");
