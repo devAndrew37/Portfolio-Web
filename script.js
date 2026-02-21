@@ -47,6 +47,8 @@ const moreProjectsText5 = document.querySelector(".p-text-more5");
 const moreProjectsText6 = document.querySelector(".p-text-more6");
 const moreProjectsIcon = document.querySelector(".more-icon");
 
+const blurBackground = document.getElementById('blur-background');
+
 const icon1Link = document.createElement("a");
 icon1Link.target = "_blank";
 icon1Link.rel = "noopener noreferrer";
@@ -91,26 +93,69 @@ function isMobilePortrait() {
 
 if (isMobilePortrait()) {
   const projectCards = document.querySelectorAll('.project-card');
-  let currentIndex = null;
+  const cardContainer = document.querySelector('.card-container');
+  let activeCard = null;
+  let blurTimeout;
 
-  const observer = new IntersectionObserver((entries) => {
+  const projectsObserver = new IntersectionObserver((entries) => {
+    let isAnyCardIntersecting = false;
+    let intersectingEntry = null;
+
     entries.forEach(entry => {
-      const index = Array.from(projectCards).indexOf(entry.target) + 1;
       if (entry.isIntersecting) {
-        if (currentIndex !== index) {
-          changeBackground(index);
-          currentIndex = index;
+        isAnyCardIntersecting = true;
+        intersectingEntry = entry;
+      }
+    });
+
+    if (isAnyCardIntersecting) {
+      const index = Array.from(projectCards).indexOf(intersectingEntry.target) + 1;
+      if (activeCard !== index) {
+        changeBackground(index);
+        activeCard = index;
+        blurBackground.style.opacity = '0';
+      }
+    } else {
+      if (activeCard !== null) {
+        const previouslyActiveCard = projectCards[activeCard - 1];
+        const isPreviouslyActiveCardVisible = entries.some(e => e.target === previouslyActiveCard && e.isIntersecting);
+        
+        if (!isPreviouslyActiveCardVisible) {
+          const nextCardIndex = (activeCard % projectCards.length) + 1;
+          const nextCardBg = getComputedStyle(document.body).backgroundImage;
+
+          blurBackground.style.backgroundImage = nextCardBg;
+          blurBackground.style.opacity = '1';
+          
+          removeBackground();
+          activeCard = null;
         }
+      }
+    }
+  }, {
+    threshold: 0.75
+  });
+
+  const cardContainerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
+        // After scrolling past the main card, show the blurred background
+        // using the background of the first project.
+        blurBackground.style.backgroundImage = "url('assets/project1-a.png')";
+        blurBackground.style.opacity = '1';
       } else {
-        removeBackground();
-        currentIndex = null;
+        // Before the main card is scrolled past, the blur layer is transparent
+        blurBackground.style.opacity = '0';
       }
     });
   }, {
-    threshold: 0.5
+    threshold: [0]
   });
 
-  projectCards.forEach(card => observer.observe(card));
+  projectCards.forEach(card => projectsObserver.observe(card));
+  if (cardContainer) {
+    cardContainerObserver.observe(cardContainer);
+  }
 }
 
 function updateIconImages() {
@@ -175,7 +220,7 @@ if (card) {
 	  backImage.src = "assets/doge2.PNG";	
 	}, 500);
 	setTimeout(() => {
-		//download.play();
+		playSound(download);
 		//window.open("assets/resume.pdf", "_blank");
 		clickCardFlag = false;
 		card.classList.remove('flipped');
@@ -185,6 +230,7 @@ if (card) {
 }
 
 project1.addEventListener("mouseleave", () => {
+	if (isMobilePortrait()) return;
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
 	sequenceFlag = true;
@@ -200,6 +246,7 @@ project1.addEventListener("mouseleave", () => {
 });
 
 project2.addEventListener("mouseleave", () => {
+	if (isMobilePortrait()) return;	
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
 	sequenceFlag = true;
@@ -215,6 +262,7 @@ project2.addEventListener("mouseleave", () => {
 });
 
 project3.addEventListener("mouseleave", () => {
+	if (isMobilePortrait()) return;
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
 	sequenceFlag = true;
@@ -238,7 +286,7 @@ async function moreProjects() {
 	typingFlag = true;
     typing.volume = 0.4;
     moreProjectsContainer.classList.remove("none");
-    typing.play();
+    playSound(typing);
     const steps = [
         { el: moreProjectsText1, text: "Check" },
         { el: moreProjectsText2, text: "out" },
@@ -261,7 +309,7 @@ async function moreProjects() {
         }
     }
 	popupIcon.volume = 0.3;
-	popupIcon.play();
+	playSound(popupIcon);
 	typingFlag = false;
     setTimeout(() => {
         moreProjectsIcon.classList.remove("none");
@@ -289,7 +337,7 @@ function changePhotoDelayed() {
 		pokemonMusic.pause();
 		photo.src = "assets/smile.jpg";
 		dukeRock.volume = 0.2;
-		dukeRock.play();
+		playSound(dukeRock);
 		document.body.classList.remove("normal-background");
 		document.body.classList.add("duke-background");
 		font1.classList.add("changed");
@@ -380,7 +428,16 @@ function backgroundTransition(project, direction) {
 }
 
 async function changeBackground(projectNumber) {
+	if (isMobilePortrait() && event && event.type !== 'scroll') {
+    	const entry = event.target;
+    	const isIntersecting = entry.isIntersecting;
+    	if (!isIntersecting) return;
+  	}	
 	if (photoChanged  || sequenceFlag) return;
+	if (!isMobilePortrait()) {
+		border.style.borderColor = "transparent";
+		font7.classList.add("transparent");
+	}
 	cardFront.classList.add("transparent-card");
 	cardBack.classList.add("transparent-card");
 	swipeText.textContent = "";
@@ -391,8 +448,6 @@ async function changeBackground(projectNumber) {
 	project2.classList.remove("left");
 	project3.classList.remove("left");
 	dukeRock.pause();
-	border.style.borderColor = "transparent";
-	font7.classList.add("transparent");
 	photo.src = "assets/transparent.png";
 	document.body.style.backgroundRepeat = "no-repeat";
 	document.body.style.backgroundPosition = "center";
@@ -402,7 +457,7 @@ async function changeBackground(projectNumber) {
 	project1ArrowLeft.classList.remove("none");
 	project1ArrowRight.classList.remove("none");
 	pokemonMusic.volume = 0.2;
-	pokemonMusic.play();
+	playSound(pokemonMusic);
 	project1.classList.add("selected-card");
 	project2.classList.add("transparent-card");
 	project3.classList.add("transparent-card");
@@ -430,7 +485,7 @@ async function changeBackground(projectNumber) {
   } else if (projectNumber === 2) {
 		project2Flag = true;
 		casinoMusic.volume = 0.2;
-		casinoMusic.play();
+		playSound(casinoMusic);
 		project2.classList.add("selected-card");
 		project1.classList.add("transparent-card");
 		project3.classList.add("transparent-card");
@@ -455,7 +510,7 @@ async function changeBackground(projectNumber) {
   } else if (projectNumber === 3) {
 		project3Flag = true;
 		pokedexMusic.volume = 0.2;
-		pokedexMusic.play();
+		playSound(pokedexMusic);
 		project3.classList.add("selected-card");
 		project2.classList.add("transparent-card");
 		project1.classList.add("transparent-card");
@@ -671,3 +726,37 @@ function removeBackground() {
 	}, 2000);
   }, 1500);
 }
+
+let soundsEnabled = false;
+
+const allSounds = [dukeRock, pokemonMusic, casinoMusic, pokedexMusic, download, typing, popupIcon];
+
+function playSound(sound) {
+  if (soundsEnabled) {
+    sound.play();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const soundPreference = localStorage.getItem('soundPreference');
+  const soundPopup = document.getElementById('sound-popup');
+
+  if (!soundPreference) {
+    soundPopup.style.display = 'flex';
+  } else {
+    soundsEnabled = soundPreference === 'true';
+  }
+
+  document.getElementById('accept-sound').addEventListener('click', () => {
+    soundsEnabled = true;
+    localStorage.setItem('soundPreference', 'true');
+    soundPopup.style.display = 'none';
+  });
+
+  document.getElementById('decline-sound').addEventListener('click', () => {
+    soundsEnabled = false;
+    localStorage.setItem('soundPreference', 'false');
+    soundPopup.style.display = 'none';
+  });
+});
+
