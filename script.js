@@ -85,6 +85,34 @@ let timeout2;
 let timeout3;
 let timeout4;
 
+function isMobilePortrait() {
+  return window.matchMedia("(max-width: 600px) and (orientation: portrait)").matches;
+}
+
+if (isMobilePortrait()) {
+  const projectCards = document.querySelectorAll('.project-card');
+  let currentIndex = null;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const index = Array.from(projectCards).indexOf(entry.target) + 1;
+      if (entry.isIntersecting) {
+        if (currentIndex !== index) {
+          changeBackground(index);
+          currentIndex = index;
+        }
+      } else {
+        removeBackground();
+        currentIndex = null;
+      }
+    });
+  }, {
+    threshold: 0.5
+  });
+
+  projectCards.forEach(card => observer.observe(card));
+}
+
 function updateIconImages() {
   const isMobile = window.matchMedia("(max-width: 600px)").matches;
   document.querySelectorAll('.arrow-icon1-left, .arrow-icon2-left').forEach(img => {
