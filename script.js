@@ -25,6 +25,9 @@ const h2Project3 = document.querySelector(".h2-projectcard3");
 const project1 = document.querySelector(".project-card.project1");
 const project2 = document.querySelector(".project-card.project2");
 const project3 = document.querySelector(".project-card.project3");
+const backProjectCard1 = document.querySelector(".back-project-card-1");
+const backProjectCard2 = document.querySelector(".back-project-card-2");
+const backProjectCard3 = document.querySelector(".back-project-card-3");
 const swipeGif = document.querySelector(".swipe-card");
 const swipeText = document.querySelector(".swipe-text");
 const backImage = document.getElementById("back-image");
@@ -219,6 +222,45 @@ if (card) {
 		card.classList.remove('flipped');
 	}, 1800);
     card.classList.add('flipped');
+  });
+}
+
+if (project1) {
+  project1.addEventListener('click', function(e) {
+	if (!isMobilePortrait()) return;
+	if (e.target.closest('.card-icon') || e.target.closest('.card-icon-2')) return;
+	icon1Link.href = "https://90spokemongame.vercel.app/";
+	icon2Link.href = "https://github.com/devAndrew37/90s-Pokemon-Memory-Game";
+	backProjectCard1.appendChild(icon1Link);
+	backProjectCard1.appendChild(icon2Link);
+	project1.classList.remove("left");
+	project1.classList.add('flipped-project');
+  });
+}
+
+if (project2) {
+  project2.addEventListener('click', function(e) {
+	if (!isMobilePortrait()) return;
+	if (e.target.closest('.card-icon') || e.target.closest('.card-icon-2')) return;
+	icon1Link.href = "https://blackjackscript-casino.vercel.app/";
+	icon2Link.href = "https://github.com/devAndrew37/Blackjackscript-Casino";
+	backProjectCard2.appendChild(icon1Link);
+	backProjectCard2.appendChild(icon2Link);
+	project2.classList.remove("left");
+	project2.classList.add('flipped-project');
+  });
+}
+
+if (project3) {
+  project3.addEventListener('click', function(e) {
+	if (!isMobilePortrait()) return;
+	if (e.target.closest('.card-icon') || e.target.closest('.card-icon-2')) return;
+	icon1Link.href = "https://90s-pokedex.vercel.app/";
+	icon2Link.href = "https://github.com/devAndrew37/React-Pokedex-90s";
+	backProjectCard3.appendChild(icon1Link);
+	backProjectCard3.appendChild(icon2Link);
+	project3.classList.remove("left");
+	project3.classList.add('flipped-project');
   });
 }
 
