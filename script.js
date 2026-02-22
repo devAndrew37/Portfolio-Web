@@ -46,7 +46,6 @@ const moreProjectsText4 = document.querySelector(".p-text-more4");
 const moreProjectsText5 = document.querySelector(".p-text-more5");
 const moreProjectsText6 = document.querySelector(".p-text-more6");
 const moreProjectsIcon = document.querySelector(".more-icon");
-
 const blurBackground = document.getElementById('blur-background');
 
 const icon1Link = document.createElement("a");
@@ -95,7 +94,6 @@ if (isMobilePortrait()) {
   const projectCards = document.querySelectorAll('.project-card');
   const cardContainer = document.querySelector('.card-container');
   let activeCard = null;
-  let blurTimeout;
 
   const projectsObserver = new IntersectionObserver((entries) => {
     let isAnyCardIntersecting = false;
@@ -113,39 +111,33 @@ if (isMobilePortrait()) {
       if (activeCard !== index) {
         changeBackground(index);
         activeCard = index;
-        blurBackground.style.opacity = '0';
+
+        blurBackground.style.backdropFilter = 'blur(0px)';
+        blurBackground.style.backgroundColor = 'transparent';
       }
     } else {
       if (activeCard !== null) {
-        const previouslyActiveCard = projectCards[activeCard - 1];
-        const isPreviouslyActiveCardVisible = entries.some(e => e.target === previouslyActiveCard && e.isIntersecting);
-        
-        if (!isPreviouslyActiveCardVisible) {
-          const nextCardIndex = (activeCard % projectCards.length) + 1;
-          const nextCardBg = getComputedStyle(document.body).backgroundImage;
-
-          blurBackground.style.backgroundImage = nextCardBg;
-          blurBackground.style.opacity = '1';
-          
-          removeBackground();
-          activeCard = null;
+        const previouslyActiveCardStillVisible = entries.some(e => e.target === projectCards[activeCard - 1] && e.isIntersecting);
+        if (!previouslyActiveCardStillVisible) {
+            removeBackground();
+            blurBackground.style.backdropFilter = 'blur(20px)';
+            blurBackground.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+            activeCard = null;
         }
       }
     }
   }, {
-    threshold: 0.75
+    threshold: 0.5
   });
 
   const cardContainerObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
-        // After scrolling past the main card, show the blurred background
-        // using the background of the first project.
-        blurBackground.style.backgroundImage = "url('assets/project1-a.png')";
-        blurBackground.style.opacity = '1';
+        blurBackground.style.backdropFilter = 'blur(20px)';
+        blurBackground.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
       } else {
-        // Before the main card is scrolled past, the blur layer is transparent
-        blurBackground.style.opacity = '0';
+        blurBackground.style.backdropFilter = 'blur(0px)';
+        blurBackground.style.backgroundColor = 'transparent';
       }
     });
   }, {
@@ -158,7 +150,7 @@ if (isMobilePortrait()) {
   }
 }
 
-function updateIconImages() {
+/*function updateIconImages() {
   const isMobile = window.matchMedia("(max-width: 600px)").matches;
   document.querySelectorAll('.arrow-icon1-left, .arrow-icon2-left').forEach(img => {
     img.src = isMobile ? "assets/left-black.png" : "assets/left.png";
@@ -168,7 +160,7 @@ function updateIconImages() {
   });
 }
 window.addEventListener('resize', updateIconImages);
-window.addEventListener('DOMContentLoaded', updateIconImages);
+window.addEventListener('DOMContentLoaded', updateIconImages);*/
 
 document.body.addEventListener("mousemove", (e) => {
 	if (e.target.closest(".project1") || e.target.closest(".project2") || e.target.closest(".project3")) return;
@@ -229,6 +221,17 @@ if (card) {
   });
 }
 
+if (!isMobilePortrait()) {
+  project1.addEventListener('mouseenter', () => changeBackground(1));
+  project1.addEventListener('mouseleave', removeBackground);
+
+  project2.addEventListener('mouseenter', () => changeBackground(2));
+  project2.addEventListener('mouseleave', removeBackground);
+
+  project3.addEventListener('mouseenter', () => changeBackground(3));
+  project3.addEventListener('mouseleave', removeBackground);
+}
+
 project1.addEventListener("mouseleave", () => {
 	if (isMobilePortrait()) return;
 	if (project1Flag && project2Flag && project3Flag) {
@@ -246,7 +249,7 @@ project1.addEventListener("mouseleave", () => {
 });
 
 project2.addEventListener("mouseleave", () => {
-	if (isMobilePortrait()) return;	
+	if (isMobilePortrait()) return;
 	if (project1Flag && project2Flag && project3Flag) {
 	if (moreProjectsFlag) return;
 	sequenceFlag = true;
@@ -432,9 +435,9 @@ async function changeBackground(projectNumber) {
     	const entry = event.target;
     	const isIntersecting = entry.isIntersecting;
     	if (!isIntersecting) return;
-  	}	
+  	}
 	if (photoChanged  || sequenceFlag) return;
-	if (!isMobilePortrait()) {
+	if (!isMobilePortrait) {
 		border.style.borderColor = "transparent";
 		font7.classList.add("transparent");
 	}
@@ -448,6 +451,7 @@ async function changeBackground(projectNumber) {
 	project2.classList.remove("left");
 	project3.classList.remove("left");
 	dukeRock.pause();
+
 	photo.src = "assets/transparent.png";
 	document.body.style.backgroundRepeat = "no-repeat";
 	document.body.style.backgroundPosition = "center";
@@ -541,6 +545,7 @@ async function changeBackground(projectNumber) {
 }
 
 async function moveLeft(projectNumber) {
+if (isMobilePortrait()) return;
 if (iconsChangeFlag) {
 	icon1.classList.add("move-left");
 	icon2.classList.add("move-left");
@@ -596,6 +601,7 @@ if (iconsChangeFlag) {
 }}
 
 async function moveRight(projectNumber) {
+if (isMobilePortrait()) return;
 if (iconsChangeFlag) {
 	icon1.classList.add("move-right");
 	icon2.classList.add("move-right");
