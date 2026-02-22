@@ -818,6 +818,14 @@ a {
 .background-change-3d { background-image: url('assets/project3-d-m.jpg'); }
 }
 
+@media (min-width: 350px) and (max-width: 376px) {
+  .background-change-1a, .background-change-1b, .background-change-1c, .background-change-1d,
+  .background-change-2a, .background-change-2b, .background-change-2c,
+  .background-change-3a, .background-change-3b, .background-change-3c, .background-change-3d {
+    background-size: 105% 105% !important;
+  }
+}
+
 .popup-container {
   position: fixed;
   top: 0;

@@ -212,6 +212,7 @@ if (card) {
 	  backImage.src = "assets/doge2.PNG";	
 	}, 500);
 	setTimeout(() => {
+		download.volume = 0.3;
 		playSound(download);
 		//window.open("assets/resume.pdf", "_blank");
 		clickCardFlag = false;
@@ -437,7 +438,7 @@ async function changeBackground(projectNumber) {
     	if (!isIntersecting) return;
   	}
 	if (photoChanged  || sequenceFlag) return;
-	if (!isMobilePortrait) {
+	if (!isMobilePortrait()) {
 		border.style.borderColor = "transparent";
 		font7.classList.add("transparent");
 	}
