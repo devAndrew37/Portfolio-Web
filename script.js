@@ -25,9 +25,6 @@ const h2Project3 = document.querySelector(".h2-projectcard3");
 const project1 = document.querySelector(".project-card.project1");
 const project2 = document.querySelector(".project-card.project2");
 const project3 = document.querySelector(".project-card.project3");
-const backProjectCard1 = document.querySelector(".back-project-card-1");
-const backProjectCard2 = document.querySelector(".back-project-card-2");
-const backProjectCard3 = document.querySelector(".back-project-card-3");
 const swipeGif = document.querySelector(".swipe-card");
 const swipeText = document.querySelector(".swipe-text");
 const backImage = document.getElementById("back-image");
@@ -51,21 +48,6 @@ const moreProjectsText6 = document.querySelector(".p-text-more6");
 const moreProjectsIcon = document.querySelector(".more-icon");
 const blurBackground = document.getElementById('blur-background');
 
-const icon1Link = document.createElement("a");
-icon1Link.target = "_blank";
-icon1Link.rel = "noopener noreferrer";
-const icon1 = document.createElement("img");
-icon1.src = "assets/link.png";
-icon1.classList.add("card-icon");
-icon1Link.appendChild(icon1);
-const icon2Link = document.createElement("a");
-icon2Link.target = "_blank";
-icon2Link.rel = "noopener noreferrer";
-const icon2 = document.createElement("img");
-icon2.src = "assets/github-icon.png";
-icon2.classList.add("card-icon-2");
-icon2Link.appendChild(icon2);
-
 if (portrait) {
 	portrait.addEventListener('mousemove', onPortraitMouseMove);
 	portrait.addEventListener('mouseleave', onPortraitMouseLeave);
@@ -83,11 +65,27 @@ let moreProjectsFlag = false;
 let typingFlag = false;
 let sequenceFlag = false;
 let sequenceStartedFlag = false;
+let flippedProjectFlag = false;
 let photoTimeout;
 let timeout1;
 let timeout2;
 let timeout3;
 let timeout4;
+
+const icon1Link = document.createElement("a");
+icon1Link.target = "_blank";
+icon1Link.rel = "noopener noreferrer";
+const icon1 = document.createElement("img");
+icon1.src = "assets/link.png";
+icon1.classList.add("card-icon");
+icon1Link.appendChild(icon1);
+const icon2Link = document.createElement("a");
+icon2Link.target = "_blank";
+icon2Link.rel = "noopener noreferrer";
+const icon2 = document.createElement("img");
+icon2.src = "assets/github-icon.png";
+icon2.classList.add("card-icon-2");
+icon2Link.appendChild(icon2);
 
 function isMobilePortrait() {
   return window.matchMedia("(max-width: 600px) and (orientation: portrait)").matches;
@@ -229,12 +227,16 @@ if (project1) {
   project1.addEventListener('click', function(e) {
 	if (!isMobilePortrait()) return;
 	if (e.target.closest('.card-icon') || e.target.closest('.card-icon-2')) return;
-	icon1Link.href = "https://90spokemongame.vercel.app/";
-	icon2Link.href = "https://github.com/devAndrew37/90s-Pokemon-Memory-Game";
-	backProjectCard1.appendChild(icon1Link);
-	backProjectCard1.appendChild(icon2Link);
 	project1.classList.remove("left");
-	project1.classList.add('flipped-project');
+	if (flippedProjectFlag) {
+		project1.classList.remove('flipped-project');
+		project1.classList.add("flipped-project-back");
+		flippedProjectFlag = false;
+	} else {
+		project1.classList.remove("flipped-project-back");
+		project1.classList.add('flipped-project');
+		flippedProjectFlag = true;
+	}
   });
 }
 
@@ -242,12 +244,16 @@ if (project2) {
   project2.addEventListener('click', function(e) {
 	if (!isMobilePortrait()) return;
 	if (e.target.closest('.card-icon') || e.target.closest('.card-icon-2')) return;
-	icon1Link.href = "https://blackjackscript-casino.vercel.app/";
-	icon2Link.href = "https://github.com/devAndrew37/Blackjackscript-Casino";
-	backProjectCard2.appendChild(icon1Link);
-	backProjectCard2.appendChild(icon2Link);
 	project2.classList.remove("left");
-	project2.classList.add('flipped-project');
+	if (flippedProjectFlag) {
+		project2.classList.remove('flipped-project');
+		project2.classList.add("flipped-project-back");
+		flippedProjectFlag = false;
+	} else {
+		project2.classList.remove("flipped-project-back");
+		project2.classList.add('flipped-project');
+		flippedProjectFlag = true;
+	}
   });
 }
 
@@ -255,12 +261,16 @@ if (project3) {
   project3.addEventListener('click', function(e) {
 	if (!isMobilePortrait()) return;
 	if (e.target.closest('.card-icon') || e.target.closest('.card-icon-2')) return;
-	icon1Link.href = "https://90s-pokedex.vercel.app/";
-	icon2Link.href = "https://github.com/devAndrew37/React-Pokedex-90s";
-	backProjectCard3.appendChild(icon1Link);
-	backProjectCard3.appendChild(icon2Link);
 	project3.classList.remove("left");
-	project3.classList.add('flipped-project');
+	if (flippedProjectFlag) {
+		project3.classList.remove('flipped-project');
+		project3.classList.add("flipped-project-back");
+		flippedProjectFlag = false;
+	} else {
+		project3.classList.remove("flipped-project-back");
+		project3.classList.add('flipped-project');
+		flippedProjectFlag = true;
+	}
   });
 }
 
@@ -807,5 +817,44 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('soundPreference', 'false');
     soundPopup.style.display = 'none';
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecciona todas las tarjetas de proyecto que deben ser observadas
+    const projectCards = document.querySelectorAll('.project-card.project1, .project-card.project2, .project-card.project3');
+
+    // Opciones para el observador. El 'threshold' indica qué porcentaje
+    // del elemento debe estar visible para que se considere "intersectando".
+    // 0.1 significa que se activará cuando el 10% del elemento entre o salga.
+    const options = {
+        root: null, // null significa que el viewport es el área de observación
+        rootMargin: '0px',
+        threshold: 0.9 
+    };
+
+    // La función que se ejecutará cuando un elemento observado cambie su visibilidad
+    const handleIntersection = (entries, observer) => {
+        entries.forEach(entry => {
+            // Si el elemento NO está en el viewport
+            if (!entry.isIntersecting) {
+                const card = entry.target;
+                // Y si la tarjeta está volteada...
+                if (card.classList.contains('flipped-project')) {
+                    // ...la devolvemos a su posición original.
+                    card.classList.remove('flipped-project');
+                    card.classList.add('flipped-project-back');
+					flippedProjectFlag = false;
+                }
+            }
+        });
+    };
+
+    // Creamos el nuevo observador
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    // Le decimos al observador que vigile cada una de las tarjetas
+    projectCards.forEach(card => {
+        observer.observe(card);
+    });
 });
 
