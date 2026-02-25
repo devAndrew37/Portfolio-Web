@@ -5,6 +5,8 @@ const pokedexMusic = new Audio("assets/music3.mp3");
 const download = new Audio("assets/download_notification.mp3");
 const typing = new Audio("assets/typing.mp3");
 const popupIcon = new Audio("assets/icon-popup.mp3");
+const header = document.querySelector("header");
+const footer = document.querySelector("footer");
 const card = document.querySelector(".card");
 const cardFront = document.querySelector(".card-front");
 const cardBack = document.querySelector(".card-back");
@@ -112,7 +114,6 @@ if (isMobilePortrait()) {
       if (activeCard !== index) {
         changeBackground(index);
         activeCard = index;
-
         blurBackground.style.backdropFilter = 'blur(0px)';
         blurBackground.style.backgroundColor = 'transparent';
       }
@@ -386,6 +387,8 @@ function changePhotoDelayed() {
 	setTimeout(() => {
 		if (swipeFlag) swipeGif.src = "assets/swipe-white.png";
 		else if (!swipeFlag) swipeGif.src = "assets/swipe-card-white.gif";
+		header.style.backgroundColor = "#2cffcc";
+		footer.style.backgroundColor = "#2cffcc";
 		bgChangeFlag = true;
 		swipeText.style.color = "#2cffcc";
 		swipeText.classList.add("typing-effect-green");
@@ -465,6 +468,8 @@ function originalPhoto() {
 	cardBack.classList.remove("change-card");
 	document.body.classList.remove("duke-background");
 	document.body.classList.add("normal-background");
+	header.style.backgroundColor = "#000";
+	footer.style.backgroundColor = "#000";
 }
 
 function backgroundTransition(project, direction) {
@@ -489,7 +494,7 @@ async function changeBackground(projectNumber) {
     	const isIntersecting = entry.isIntersecting;
     	if (!isIntersecting) return;
   	}
-	if (photoChanged  || sequenceFlag) return;
+	if ((photoChanged && !isMobilePortrait()) || sequenceFlag) return;
 	if (!isMobilePortrait()) {
 		border.style.borderColor = "transparent";
 		font7.classList.add("transparent");
@@ -504,7 +509,6 @@ async function changeBackground(projectNumber) {
 	project2.classList.remove("left");
 	project3.classList.remove("left");
 	dukeRock.pause();
-
 	photo.src = "assets/transparent.png";
 	document.body.style.backgroundRepeat = "no-repeat";
 	document.body.style.backgroundPosition = "center";
@@ -769,9 +773,6 @@ function removeBackground() {
 	project1.classList.remove("transparent-card");
 	project2.classList.remove("transparent-card");
 	project3.classList.remove("transparent-card");
-	border.style.borderColor = "black";
-	font7.classList.remove("changed");
-	font7.classList.remove("transparent");
 	document.body.classList.remove("background-transition-left");
 	document.body.classList.remove("background-transition-right");
   setTimeout(() => {
@@ -784,6 +785,14 @@ function removeBackground() {
 		swipeFlag = true;
 	}, 2000);
   }, 1500);
+  	if (isMobilePortrait() && photoChanged) {
+		border.style.borderColor = "white";
+		font7.classList.add("changed");
+		return;
+	} 
+	border.style.borderColor = "black";
+	font7.classList.remove("changed");
+	font7.classList.remove("transparent");
 }
 
 let soundsEnabled = false;
@@ -820,39 +829,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Selecciona todas las tarjetas de proyecto que deben ser observadas
-    const projectCards = document.querySelectorAll('.project-card.project1, .project-card.project2, .project-card.project3');
-
-    // Opciones para el observador. El 'threshold' indica qué porcentaje
-    // del elemento debe estar visible para que se considere "intersectando".
-    // 0.1 significa que se activará cuando el 10% del elemento entre o salga.
+    const projectCards = document.querySelectorAll('.project-card.project1, .project-card.project2, .project-card.project3, .container-more');
     const options = {
-        root: null, // null significa que el viewport es el área de observación
+        root: null, 
         rootMargin: '0px',
         threshold: 0.9 
     };
 
-    // La función que se ejecutará cuando un elemento observado cambie su visibilidad
     const handleIntersection = (entries, observer) => {
         entries.forEach(entry => {
-            // Si el elemento NO está en el viewport
-            if (!entry.isIntersecting) {
+			if (entry.isIntersecting && isMobilePortrait()) {
+				const card = entry.target;
+				if (card.classList.contains('none')) {
+					card.classList.remove('none');
+					moreProjects();
+				}
+			}
+            else if (!entry.isIntersecting) {
                 const card = entry.target;
-                // Y si la tarjeta está volteada...
                 if (card.classList.contains('flipped-project')) {
-                    // ...la devolvemos a su posición original.
                     card.classList.remove('flipped-project');
                     card.classList.add('flipped-project-back');
 					flippedProjectFlag = false;
-                }
-            }
+                } 
+			}
         });
     };
 
-    // Creamos el nuevo observador
     const observer = new IntersectionObserver(handleIntersection, options);
 
-    // Le decimos al observador que vigile cada una de las tarjetas
     projectCards.forEach(card => {
         observer.observe(card);
     });

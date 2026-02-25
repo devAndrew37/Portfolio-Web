@@ -9,6 +9,9 @@ html, body {
   font-family: "DM Serif Text", serif;
   margin: 0;
 }
+header, footer {
+  display: none;
+}
 body {
   background: linear-gradient(270deg, #8bc5cd, #5a9ca4, #297383); 
 }
@@ -488,6 +491,72 @@ a {
   z-index: 100;
 }
 
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 85%;
+  border: 2px solid #000;
+}
+
+.popup-content h2 {
+  font-size: 17px;
+}
+
+.popup-content p {
+  font-size: 16px;
+}
+
+.popup-buttons {
+  margin-top: 20px;
+}
+
+.popup-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #000;
+}
+
+#accept-sound {
+  background-color: #F2F3F4;
+  color: #000;
+}
+
+#decline-sound {
+  background-color: #000;
+  color: #F2F3F4;
+}
+
+#blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; 
+  background-color: transparent; 
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px); 
+  transition: backdrop-filter 0.8s ease, background-color 0.8s ease;
+}
+
 .info {
  grid-template-areas: "name-job description contacts";
  padding-left: 4px;
@@ -616,7 +685,23 @@ a {
   html, body {
     height: 4800px;
     display: block;
-    padding-top: 20px;
+    padding-top: 0px;
+  }
+
+  header {
+  display: block !important;
+  height: 15px;
+  width: 100%;
+  background-color: #000;
+  }
+
+  footer {
+    display: block !important;
+    height: 15px;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    top:1625px;
   }
 
   .container {
@@ -639,7 +724,7 @@ a {
     width: 95vw; 
     height: 220px; 
     min-width: unset;
-    top: 100px;
+    top: 120px;
     display: grid;
   }
 
@@ -870,8 +955,33 @@ a {
   display: none;
 }
 
-.swipe-card, .swipe-text, .container-more {
+.swipe-card, .swipe-text {
   display: none;
+}
+
+.container-more {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  position: absolute;
+  left: 38vw;
+  top: 4200px;
+}
+
+.p-text-more1, .p-text-more2, .p-text-more3, .p-text-more4, .p-text-more5, .p-text-more6 {
+  font-size: 25px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.more-icon {
+  width: 80px;
+  height: 80px;
+  margin-top: 0px;
+  margin-left: -10px;
 }
 
 /* background changes */
@@ -906,69 +1016,234 @@ a {
   }
 }
 
-.popup-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+@media (max-width: 900px) and (orientation: landscape),
+       (min-width: 601px) and (max-width: 1400px) {
+  html, body {
+    height: 100%;
+    width: 120vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+  }
 
-.popup-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 85%;
-  border: 2px solid #000;
-}
+  header, footer {
+    display: none !important;
+    position: static;
+    height: auto;
+    width: auto;
+    background-color: transparent;
+  }
 
-.popup-content h2 {
-  font-size: 17px;
-}
+  .container {
+    flex-direction: row;
+    gap: 200px;
+    padding: 0;
+  }
 
-.popup-content p {
-  font-size: 16px;
-}
+  .card-container {
+    border-right: 0.15em groove #000;
+    border-bottom: none;
+    padding: 0 150px 0 0;
+    height: 800px;
+    width: auto;
+    display: block;
+    justify-content: center;
+  }
 
-.popup-buttons {
-  margin-top: 20px;
-}
+  .card {
+    width: 700px;
+    height: 350px;
+    min-width: 300px;
+    max-width: 600px;
+    top: 225px;
+    display: block;
+  }
 
-.popup-buttons button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  border: 1px solid #000;
-}
+  .card-front {
+    grid-template-columns: 2fr 1fr;
+  }
 
-#accept-sound {
-  background-color: #F2F3F4;
-  color: #000;
-}
+  .portrait {
+    height: 350px;
+  }
 
-#decline-sound {
-  background-color: #000;
-  color: #F2F3F4;
-}
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0 10px 10px 0;
+  }
 
-#blur-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; 
-  background-color: transparent; 
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px); 
-  transition: backdrop-filter 0.8s ease, background-color 0.8s ease;
-}
+  .info {
+    padding-left: 4px;
+    overflow: visible;
+  }
 
+  h1 {
+    font-size: 25px;
+    padding: 15px 0 0 10px;
+  }
+
+  h2 {
+    font-size: 19px;
+    padding: 0 0 10px 10px;
+    margin: 10px 0 5px 0;
+  }
+
+  .project-container {
+    width: auto;
+    height: auto;
+    display: block;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .h2-project {
+    margin: 60px 0 -80px 0;
+    font-size: 30px;
+  }
+
+  .project-card {
+    width: 400px;
+    height: 150px !important;
+    margin: 100px 0;
+    position: static !important;
+  }
+
+  .project-card h2 {
+    font-size: 19px;
+    padding-top: 0;
+  }
+
+  #name-job h1 {
+    font-size: 25px !important;
+  }
+
+  #name-job h2 {
+    font-size: 19px !important;
+  }
+
+  .skills, .skills-cont {
+    font-size: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+  }
+
+  .languages {
+    font-size: inherit !important;
+    position: relative !important;
+    top: 10px !important;
+    left: auto !important;
+  }
+
+  .description {
+    font-size: 14.2px !important;
+    font-style: normal !important;
+    position: relative !important;
+    top: 10px !important;
+    left: 0 !important;
+    margin: 0 10px !important;
+    margin-left: 3px !important;
+    padding: 0 !important;
+  }
+
+  #contacts {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    margin-top: 10px !important;
+    font-size: inherit !important;
+  }
+
+  #contacts .icon {
+    width: 40px !important;
+    height: auto !important;
+    margin-top: -50px !important;
+    position: static !important;
+    top: auto !important;
+  }
+
+  #contacts #email {
+    left: 0 !important;
+  }
+
+  #contacts #instagram-icon {
+    top: auto !important;
+  }
+
+  #back-image {
+    width: 200px !important;
+    height: 200px !important;
+    left: 200px !important;
+    top: 70px !important;
+  }
+
+  .link-icon, .link-icon2 {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    padding: 10px 0 10px 10px !important;
+  }
+
+  .card-icon {
+    width: auto !important;
+    height: auto !important;
+    margin: 50px 40px !important;
+  }
+
+  .card-icon-2 {
+    width: auto !important;
+    height: auto !important;
+    margin: 40px 40px 43px 40px !important;
+  }
+
+  .selected-card {
+    background-color: #000 !important;
+    color: white !important;
+  }
+
+  .arrow-icon1-left,
+  .arrow-icon1-right,
+  .arrow-icon2-left,
+  .arrow-icon2-right {
+    display: block !important;
+  }
+
+  .swipe-card {
+    display: block !important;
+  }
+
+  .swipe-text {
+    display: inline-block !important;
+  }
+
+  .container-more {
+    width: 80px !important;
+    left: 110vw !important;
+    top: 40vh !important;
+  }
+
+  .p-text-more1, .p-text-more2, .p-text-more3,
+  .p-text-more4, .p-text-more5, .p-text-more6 {
+    font-size: 22px !important;
+    font-weight: 400 !important;
+  }
+
+  .more-icon {
+    margin-left: 0 !important;
+  }
+
+  .background-change-1a, .background-change-1b, .background-change-1c, .background-change-1d,
+  .background-change-2a, .background-change-2b, .background-change-2c,
+  .background-change-3a, .background-change-3b, .background-change-3c, .background-change-3d {
+    background-attachment: scroll !important;
+    background-position: initial !important;
+    background-size: 110% !important;
+    background-color: transparent !important;
+  }
+}
