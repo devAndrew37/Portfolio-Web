@@ -203,7 +203,7 @@ if (project1.classList.contains("flipped-project-back") || project2.classList.co
 if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWindowFlag) {
 	setTimeout(() => {
 		swipeGif.classList.remove("transparent");
-		swipeText.textContent = "Click on card to check out my resume!";
+		swipeText.textContent = "Tap on card to check out my resume!";
 		swipeText.classList.add("typing-effect");
 		setTimeout(() => {
 			if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
