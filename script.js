@@ -283,7 +283,7 @@ if (card) {
 	setTimeout(() => {
 		download.volume = 0.3;
 		playSound(download);
-		//window.open("assets/resume.pdf", "_blank");
+		window.open("assets/resume.pdf", "_blank");
 		clickCardFlag = false;
 		card.classList.remove('flipped');
 	}, 1800);
