@@ -5,6 +5,7 @@ const pokedexMusic = new Audio("assets/music3.mp3");
 const download = new Audio("assets/download_notification.mp3");
 const typing = new Audio("assets/typing.mp3");
 const popupIcon = new Audio("assets/icon-popup.mp3");
+const allSounds = [dukeRock, pokemonMusic, casinoMusic, pokedexMusic, download, typing, popupIcon];
 const header = document.querySelector("header");
 const footer = document.querySelector("footer");
 const card = document.querySelector(".card");
@@ -21,6 +22,7 @@ const photo = document.getElementById("foto");
 const email = document.getElementById("email");
 const github = document.getElementById("github-icon");
 const border = document.querySelector(".card-container");
+const projectSection = document.querySelector(".project-container");
 const h2Project1 = document.querySelector(".h2-projectcard1");
 const h2Project2 = document.querySelector(".h2-projectcard2");
 const h2Project3 = document.querySelector(".h2-projectcard3");
@@ -68,6 +70,10 @@ let typingFlag = false;
 let sequenceFlag = false;
 let sequenceStartedFlag = false;
 let flippedProjectFlag = false;
+let leftAnimationFlag = false;
+let scrollAutomateFlag = false;
+let soundsEnabled = false;
+let soundWindowFlag	= false;
 let photoTimeout;
 let timeout1;
 let timeout2;
@@ -88,6 +94,37 @@ const icon2 = document.createElement("img");
 icon2.src = "assets/github-icon.png";
 icon2.classList.add("card-icon-2");
 icon2Link.appendChild(icon2);
+
+function playSound(sound) {
+  if (soundsEnabled) {
+    sound.play();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const soundPreference = localStorage.getItem('soundPreference');
+  const soundPopup = document.getElementById('sound-popup');
+
+  if (!soundPreference) {
+    soundPopup.style.display = 'flex';
+  } else {
+    soundsEnabled = soundPreference === 'true';
+  }
+
+  document.getElementById('accept-sound').addEventListener('click', () => {
+    soundsEnabled = true;
+    localStorage.setItem('soundPreference', 'true');
+    soundPopup.style.display = 'none';
+	soundWindowFlag = true;
+  });
+
+  document.getElementById('decline-sound').addEventListener('click', () => {
+    soundsEnabled = false;
+    localStorage.setItem('soundPreference', 'false');
+    soundPopup.style.display = 'none';
+	soundWindowFlag = true;
+  });
+});
 
 function isMobilePortrait() {
   return window.matchMedia("(max-width: 600px) and (orientation: portrait)").matches;
@@ -152,20 +189,46 @@ if (isMobilePortrait()) {
   }
 }
 
-/*function updateIconImages() {
-  const isMobile = window.matchMedia("(max-width: 600px)").matches;
-  document.querySelectorAll('.arrow-icon1-left, .arrow-icon2-left').forEach(img => {
-    img.src = isMobile ? "assets/left-black.png" : "assets/left.png";
-  });
-  document.querySelectorAll('.arrow-icon1-right, .arrow-icon2-right').forEach(img => {
-	img.src = isMobile ? "assets/right-black.png" : "assets/right.png";
-  });
+window.addEventListener("scroll", () => {
+if (!soundWindowFlag || scrollAutomateFlag || card.classList.contains("flipped") || project1.classList.contains("flipped-project") || project2.classList.contains("flipped-project") || project3.classList.contains("flipped-project")) return;
+if (project1.classList.contains("flipped-project-back") || project2.classList.contains("flipped-project-back") || project3.classList.contains("flipped-project-back")) {
+	project1.classList.remove("flipped-project-back");
+	project2.classList.remove("flipped-project-back");
+	project3.classList.remove("flipped-project-back");
+	return;
 }
-window.addEventListener('resize', updateIconImages);
-window.addEventListener('DOMContentLoaded', updateIconImages);*/
+if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWindowFlag) {
+	setTimeout(() => {
+		swipeGif.classList.remove("transparent");
+		swipeText.textContent = "Click on card to check out my resume!";
+		swipeText.classList.add("typing-effect");
+		setTimeout(() => {
+			if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
+			else swipeGif.src = "assets/swipe.png";
+			swipeFlag = true;
+		}, 2000);
+	}, 3000);
+		leftAnimationFlag = true;
+		card.classList.add("left");
+		project1.classList.add("left");
+		project2.classList.add("left");
+		project3.classList.add("left");
+		setTimeout(() => {
+			card.classList.remove("left");
+		}, 2000);
+		setTimeout(() => {
+			project1.classList.remove("left");
+			project2.classList.remove("left");
+			project3.classList.remove("left");
+		}, 4000);
+		setTimeout(() => {
+			leftAnimationFlag = false;
+		}, 8000);
+}
+});
 
 document.body.addEventListener("mousemove", (e) => {
-	if (e.target.closest(".project1") || e.target.closest(".project2") || e.target.closest(".project3")) return;
+	if (e.target.closest(".project1") || e.target.closest(".project2") || e.target.closest(".project3") || isMobilePortrait()) return;
 	if (project1Flag && project2Flag && project3Flag) return;
 	project1.classList.add("left");
 	project2.classList.add("left");
@@ -178,6 +241,7 @@ document.body.addEventListener("mousemove", (e) => {
 });
 
 card.addEventListener("mousemove", () => {
+if (isMobilePortrait()) return;
   setTimeout(() => {
 	swipeGif.classList.remove("transparent");
 	swipeText.textContent = "Click on card to check out my resume!";
@@ -191,7 +255,7 @@ card.addEventListener("mousemove", () => {
 });
 
 card.addEventListener("mouseleave", () => {
-  if(typingFlag) return;
+  if(typingFlag || isMobilePortrait()) return;
   if (clickCardFlag) {
 	setTimeout(() => {
 		clickCardFlag = false;
@@ -795,38 +859,6 @@ function removeBackground() {
 	font7.classList.remove("transparent");
 }
 
-let soundsEnabled = false;
-
-const allSounds = [dukeRock, pokemonMusic, casinoMusic, pokedexMusic, download, typing, popupIcon];
-
-function playSound(sound) {
-  if (soundsEnabled) {
-    sound.play();
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const soundPreference = localStorage.getItem('soundPreference');
-  const soundPopup = document.getElementById('sound-popup');
-
-  if (!soundPreference) {
-    soundPopup.style.display = 'flex';
-  } else {
-    soundsEnabled = soundPreference === 'true';
-  }
-
-  document.getElementById('accept-sound').addEventListener('click', () => {
-    soundsEnabled = true;
-    localStorage.setItem('soundPreference', 'true');
-    soundPopup.style.display = 'none';
-  });
-
-  document.getElementById('decline-sound').addEventListener('click', () => {
-    soundsEnabled = false;
-    localStorage.setItem('soundPreference', 'false');
-    soundPopup.style.display = 'none';
-  });
-});
 
 document.addEventListener('DOMContentLoaded', () => {
     const projectCards = document.querySelectorAll('.project-card.project1, .project-card.project2, .project-card.project3, .container-more');
@@ -848,9 +880,13 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (!entry.isIntersecting) {
                 const card = entry.target;
                 if (card.classList.contains('flipped-project')) {
+					scrollAutomateFlag = true;
                     card.classList.remove('flipped-project');
                     card.classList.add('flipped-project-back');
 					flippedProjectFlag = false;
+					setTimeout(() => {
+						scrollAutomateFlag = false;
+					}, 1000);
                 } 
 			}
         });

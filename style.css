@@ -955,8 +955,30 @@ a {
   display: none;
 }
 
-.swipe-card, .swipe-text {
-  display: none;
+.swipe-card {
+  position: absolute;
+  top: 408px;
+  left:36px;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 130px;
+  opacity: 0.8;
+  z-index: -10;
+}
+
+.swipe-text {
+  position: absolute;
+  top: 485px;
+  left: 165px; 
+  transform: translate(-50%, -50%);
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #000;
+  display: inline-block; 
+  width: 44ch; 
 }
 
 .container-more {
