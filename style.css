@@ -491,6 +491,10 @@ a {
   z-index: 100;
 }
 
+.back-top-icon {
+  display: none;
+}
+
 .popup-container {
   position: fixed;
   top: 0;
@@ -540,7 +544,7 @@ a {
 }
 
 #decline-sound {
-  background-color: #000;
+  background-color: #161616;
   color: #F2F3F4;
 }
 
@@ -782,10 +786,9 @@ a {
   }
 
   .project-card h2 {
-    font-size: 18px;
+    font-size: 20px;
     padding-top: 15px;
   }
-
 
 #name-job h1 { 
   font-size: 15px !important;
@@ -957,11 +960,11 @@ a {
 
 .swipe-card {
   position: absolute;
-  top: 408px;
-  left:36px;
-  transform: translate(-50%, -50%);
+  top: 440px;
+  left: 60vw;
+  transform: rotate(270deg);
   width: 100px;
-  height: 130px;
+  height: 100px;
   opacity: 0.8;
   z-index: -10;
 }
@@ -969,16 +972,15 @@ a {
 .swipe-text {
   position: absolute;
   top: 485px;
-  left: 165px; 
+  left: 150px; 
   transform: translate(-50%, -50%);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: bold;
   color: #000;
   overflow: hidden;
   white-space: nowrap;
   border-right: 2px solid #000;
   display: inline-block; 
-  width: 44ch; 
 }
 
 .container-more {
@@ -1004,6 +1006,15 @@ a {
   height: 80px;
   margin-top: 0px;
   margin-left: -10px;
+}
+
+.back-top-icon {
+  display: block;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 500px;
+  left: 40vw;
 }
 
 /* background changes */

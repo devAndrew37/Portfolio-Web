@@ -51,6 +51,7 @@ const moreProjectsText5 = document.querySelector(".p-text-more5");
 const moreProjectsText6 = document.querySelector(".p-text-more6");
 const moreProjectsIcon = document.querySelector(".more-icon");
 const blurBackground = document.getElementById('blur-background');
+const backTopIcon = document.querySelector(".back-top-icon");
 
 if (portrait) {
 	portrait.addEventListener('mousemove', onPortraitMouseMove);
@@ -74,6 +75,7 @@ let leftAnimationFlag = false;
 let scrollAutomateFlag = false;
 let soundsEnabled = false;
 let soundWindowFlag	= false;
+let scrollingTopFlag = false;
 let photoTimeout;
 let timeout1;
 let timeout2;
@@ -147,6 +149,7 @@ if (isMobilePortrait()) {
     });
 
     if (isAnyCardIntersecting) {
+	  if (scrollingTopFlag) return;
       const index = Array.from(projectCards).indexOf(intersectingEntry.target) + 1;
       if (activeCard !== index) {
         changeBackground(index);
@@ -207,7 +210,7 @@ if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWind
 			else swipeGif.src = "assets/swipe.png";
 			swipeFlag = true;
 		}, 2000);
-	}, 3000);
+	}, 2000);
 		leftAnimationFlag = true;
 		card.classList.add("left");
 		project1.classList.add("left");
@@ -474,6 +477,7 @@ function changePhotoDelayed() {
 		moreProjectsContainer.classList.add("changed");
 		github.src = "assets/github-green.png";
 		moreProjectsIcon.src = "assets/github-green.png";
+		backTopIcon.src = "assets/back-top-green.png";
 		border.style.borderColor = "white";
 		project1.classList.add("change-card");
 		project2.classList.add("change-card");
@@ -523,6 +527,7 @@ function originalPhoto() {
 	moreProjectsContainer.classList.remove("changed");
 	moreProjectsIcon.src = "assets/github.png";
 	github.src = "assets/github.png";
+	backTopIcon.src = "assets/back-top.png";
 	email.classList.remove("changed");
 	border.style.borderColor = "black";
 	project1.classList.remove("change-card");
@@ -857,6 +862,17 @@ function removeBackground() {
 	border.style.borderColor = "black";
 	font7.classList.remove("changed");
 	font7.classList.remove("transparent");
+}
+
+async function scrollToTop() {
+	scrollingTopFlag = true;
+	swipeText.textContent = "";
+	swipeText.classList.remove("typing-effect");
+	swipeGif.classList.add("transparent");
+	swipeGif.src = "assets/swipe-card.gif";
+	window.scrollTo({ top: 0, behavior: 'smooth' });
+	await delay(1000);
+	scrollingTopFlag = false;
 }
 
 
