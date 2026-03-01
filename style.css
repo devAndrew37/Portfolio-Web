@@ -14,6 +14,22 @@ header, footer {
 }
 body {
   background: linear-gradient(270deg, #8bc5cd, #5a9ca4, #297383); 
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: inherit;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.6s ease;
+  will-change: transform;
+  pointer-events: none;
 }
 .container {
   display: flex;
@@ -584,19 +600,19 @@ a {
   background-color: transparent;
 }
 
-.background-transition-left {
+body.background-transition-left::before {
   animation: moveBackgroundLeft 2.5s linear infinite;
 }
 
-.background-transition-right {
+body.background-transition-right::before {
   animation: moveBackgroundRight 2.5s linear infinite;
 }
 
-.background-transition-left-2 {
+body.background-transition-left-2::before {
   animation: moveBackgroundLeft 4s linear infinite;
 }
 
-.background-transition-right-2 {
+body.background-transition-right-2::before {
   animation: moveBackgroundRight 4s linear infinite;
 }
 
@@ -629,57 +645,57 @@ a {
   background: radial-gradient(circle at 30%, #232526 0%, #414345 70%, #000 100%);
   background-size: cover;
 }
-.background-change-1a {
+body.background-change-1a::before {
   background-image: url('assets/project1-a.png');
   background-size: 110%;
 }
 
-.background-change-1b {
+body.background-change-1b::before {
   background-image: url('assets/project1-b.png');
   background-size: 110%;
 }
 
-.background-change-1c {
+body.background-change-1c::before {
   background-image: url('assets/project1-c.png');
   background-size: 110%;
 }
 
-.background-change-1d {
+body.background-change-1d::before {
   background-image: url('assets/project1-d.png');
   background-size: 110%;
 }
 
-.background-change-2a {
+body.background-change-2a::before {
   background-image: url('assets/project2-a.png');
   background-size: 110%;
 }
 
-.background-change-2b {
+body.background-change-2b::before {
   background-image: url('assets/project2-b.png');
   background-size: 110%;
 }
 
-.background-change-2c {
+body.background-change-2c::before {
   background-image: url('assets/project2-c.png');
   background-size: 110%;
 }
 
-.background-change-3a {
+body.background-change-3a::before {
   background-image: url('assets/project3-a.png');
   background-size: 110%;
 }
 
-.background-change-3b {
+body.background-change-3b::before {
   background-image: url('assets/project3-b.png');
   background-size: 110%;
 }
 
-.background-change-3c {
+body.background-change-3c::before {
   background-image: url('assets/project3-c.png');
   background-size: 110%;
 }
 
-.background-change-3d {
+body.background-change-3d::before {
   background-image: url('assets/project3-d.png');
   background-size: 110%;
 }
@@ -1023,33 +1039,43 @@ a {
 }
 
 /* background changes */
-.background-change-1a, .background-change-1b, .background-change-1c, .background-change-1d,
-.background-change-2a, .background-change-2b, .background-change-2c,
-.background-change-3a, .background-change-3b, .background-change-3c, .background-change-3d {
-  background-attachment: fixed;
+body.background-change-1a::before,
+body.background-change-1b::before,
+body.background-change-1c::before,
+body.background-change-1d::before,
+body.background-change-2a::before,
+body.background-change-2b::before,
+body.background-change-2c::before,
+body.background-change-3a::before,
+body.background-change-3b::before,
+body.background-change-3c::before,
+body.background-change-3d::before {
   background-position: center center;
   background-size: cover !important;
-  background-color: #000; /* Color de fondo para evitar parpadeos */
+  background-color: #000;
 }
 
-.background-change-1a { background-image: url('assets/project1-a-m.jpg'); }
-.background-change-1b { background-image: url('assets/project1-b-m.jpg'); }
-.background-change-1c { background-image: url('assets/project1-c-m.jpg'); }
-.background-change-1d { background-image: url('assets/project1-d-m.jpg'); }
+body.background-change-1a::before { background-image: url('assets/project1-a-m.jpg'); }
+body.background-change-1b::before { background-image: url('assets/project1-b-m.jpg'); }
+body.background-change-1c::before { background-image: url('assets/project1-c-m.jpg'); }
+body.background-change-1d::before { background-image: url('assets/project1-d-m.jpg'); }
 
-.background-change-2a { background-image: url('assets/project2-a-m.jpg'); }
-.background-change-2b { background-image: url('assets/project2-b-m.jpg'); }
-.background-change-2c { background-image: url('assets/project2-c-m.jpg'); }
+body.background-change-2a::before { background-image: url('assets/project2-a-m.jpg'); }
+body.background-change-2b::before { background-image: url('assets/project2-b-m.jpg'); }
+body.background-change-2c::before { background-image: url('assets/project2-c-m.jpg'); }
 
-.background-change-3a { background-image: url('assets/project3-a-m.jpg'); }
-.background-change-3b { background-image: url('assets/project3-b-m.jpg'); }
-.background-change-3c { background-image: url('assets/project3-c-m.jpg'); }
-.background-change-3d { background-image: url('assets/project3-d-m.jpg'); }
+body.background-change-3a::before { background-image: url('assets/project3-a-m.jpg'); }
+body.background-change-3b::before { background-image: url('assets/project3-b-m.jpg'); }
+body.background-change-3c::before { background-image: url('assets/project3-c-m.jpg'); }
+body.background-change-3d::before { background-image: url('assets/project3-d-m.jpg'); }
 }
 
 @media (min-width: 350px) and (max-width: 480px) {
-  .background-change-1a, .background-change-1b,
-  .background-change-2a, .background-change-2b, .background-change-2c {
+  body.background-change-1a::before,
+  body.background-change-1b::before,
+  body.background-change-2a::before,
+  body.background-change-2b::before,
+  body.background-change-2c::before {
     background-size: 105% 105% !important;
   }
 }
@@ -1276,12 +1302,40 @@ a {
     margin-left: 0 !important;
   }
 
-  .background-change-1a, .background-change-1b, .background-change-1c, .background-change-1d,
-  .background-change-2a, .background-change-2b, .background-change-2c,
-  .background-change-3a, .background-change-3b, .background-change-3c, .background-change-3d {
-    background-attachment: scroll !important;
+  body.background-change-1a::before,
+  body.background-change-1b::before,
+  body.background-change-1c::before,
+  body.background-change-1d::before,
+  body.background-change-2a::before,
+  body.background-change-2b::before,
+  body.background-change-2c::before,
+  body.background-change-3a::before,
+  body.background-change-3b::before,
+  body.background-change-3c::before,
+  body.background-change-3d::before {
     background-position: initial !important;
     background-size: 110% !important;
     background-color: transparent !important;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  body.background-change-1a::before,
+  body.background-change-1b::before,
+  body.background-change-2a::before,
+  body.background-change-2b::before,
+  body.background-change-2c::before,
+  body.background-change-3a::before,
+  body.background-change-3b::before,
+  body.background-change-3c::before,
+  body.background-change-3d::before {
+    background-size: auto 100%;
+    background-position: center top;
+  }
+
+  #blur-background {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: rgba(0, 0, 0, 0.25);
   }
 }
