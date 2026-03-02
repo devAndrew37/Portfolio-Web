@@ -755,6 +755,7 @@ body.background-change-3d::before {
 
   .portrait {
     height: 100%;
+    width: 100%;
   }
 
   .portrait img {
@@ -796,14 +797,14 @@ body.background-change-3d::before {
 
   .project-card {
     width: 90vw;
-    height: 135px !important;
+    height: 150px !important;
     margin: 0 0;
     position: relative !important;
   }
 
   .project-card h2 {
     font-size: 20px;
-    padding-top: 15px;
+    padding-top: 20px;
   }
 
 #name-job h1 { 
@@ -909,7 +910,7 @@ body.background-change-3d::before {
 .front-project-card-1, .front-project-card-2, .front-project-card-3,
 .back-project-card-1, .back-project-card-2, .back-project-card-3 {
   width: 100%;
-  height: 135px;
+  height: 150px !important;
   border-radius: 10px;
   top: 0;
   left: 0;
@@ -935,12 +936,12 @@ body.background-change-3d::before {
 
 .link-icon {
   right: 30px !important;
-  top: 30px !important;
+  top: 34px !important;
 }
 
 .link-icon2 {
   left: 35px !important;
-  top: 36px !important;
+  top: 40px !important;
 }
 
 .card-icon {
@@ -964,9 +965,9 @@ body.background-change-3d::before {
 }
 
 .selected-card {
-  background-color: rgba(138, 137, 137, 0.3); 
- /* backdrop-filter: blur(5px); 
-  -webkit-backdrop-filter: blur(5px); */
+  background-color: rgba(145, 145, 145, 0.6); 
+  /*backdrop-filter: blur(1px); 
+  -webkit-backdrop-filter: blur(1px);*/
   color: black !important;
 }
 
@@ -1070,13 +1071,39 @@ body.background-change-3c::before { background-image: url('assets/project3-c-m.j
 body.background-change-3d::before { background-image: url('assets/project3-d-m.jpg'); }
 }
 
+@media (max-width: 375px) {      /* small phones */
+  .card {
+    height: 240px !important; 
+  }
+  .portrait {
+    width: 95% !important;
+    position: relative !important;
+    left: 7.5px !important;
+  }
+  .swipe-card {
+    top: 460px !important;
+  }
+  .swipe-text {
+    top: 505px !important;
+  }
+  .project-card h2 {
+    padding-top: 15px;
+  }
+}
+
 @media (min-width: 350px) and (max-width: 480px) {
   body.background-change-1a::before,
   body.background-change-1b::before,
+  body.background-change-1c::before,
+  body.background-change-1d::before,
   body.background-change-2a::before,
   body.background-change-2b::before,
-  body.background-change-2c::before {
-    background-size: 105% 105% !important;
+  body.background-change-2c::before,
+  body.background-change-3a::before,
+  body.background-change-3b::before,
+  body.background-change-3c::before,
+  body.background-change-3d::before {
+    background-size: auto 110% !important;
   }
 }
 
@@ -1170,7 +1197,6 @@ body.background-change-3d::before { background-image: url('assets/project3-d-m.j
 
   .project-card {
     width: 400px;
-    height: 150px !important;
     margin: 100px 0;
     position: static !important;
   }
