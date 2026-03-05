@@ -113,14 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
     soundsEnabled = soundPreference === 'true';
   }
 
-  document.getElementById('accept-sound').addEventListener('click', () => {
+  document.getElementById('accept-button').addEventListener('click', () => {
     soundsEnabled = true;
     localStorage.setItem('soundPreference', 'true');
     soundPopup.style.display = 'none';
 	soundWindowFlag = true;
   });
 
-  document.getElementById('decline-sound').addEventListener('click', () => {
+  document.getElementById('decline-button').addEventListener('click', () => {
     soundsEnabled = false;
     localStorage.setItem('soundPreference', 'false');
     soundPopup.style.display = 'none';
