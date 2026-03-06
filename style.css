@@ -1138,6 +1138,10 @@ html, body {
   left: -10vw !important;
   top: 0vh !important;
 }
+.popup-content {
+  position: relative !important;
+  top: -1000px !important;
+}
 }
 
 @media (min-width: 1024px) and (orientation: landscape) {         /* modo tablet landscape */
@@ -1149,6 +1153,10 @@ html, body {
   position: relative !important;
   left: -10vw !important;
   top: 0vh !important;
+}
+.popup-content {
+  position: relative !important;
+  top: -250px !important;
 }
 }
 
