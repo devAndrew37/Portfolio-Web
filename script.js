@@ -81,6 +81,7 @@ let timeout1;
 let timeout2;
 let timeout3;
 let timeout4;
+let timeOutSequence;
 
 const icon1Link = document.createElement("a");
 icon1Link.target = "_blank";
@@ -288,6 +289,13 @@ if (card) {
 		card.classList.remove('flipped');
 	}, 1800);
     card.classList.add('flipped');
+	if (sequenceFlag) {
+		clearTimeout(timeOutSequence);
+		sequenceFlag = false;
+		sequenceStartedFlag = false;
+		photoChanged = false;
+		originalPhoto();
+	}
   });
 }
 
@@ -438,9 +446,10 @@ async function moreProjects() {
     setTimeout(() => {
         moreProjectsIcon.classList.remove("none");
     }, 100);
-	setTimeout(() => {
+	timeOutSequence = setTimeout(() => {
 		sequenceFlag = false;
 		sequenceStartedFlag = false;
+		photoChanged = false;
 		originalPhoto();
 	}, 17000);
 }
