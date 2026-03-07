@@ -149,6 +149,7 @@ if (isMobilePortrait() && soundWindowFlag) {
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && isMobilePortrait() && resumeWatchedFlag && !projectsWatchedFlag) {
 	setTimeout(() => {
+	if (photoChanged) swipeGif2.src = "assets/swipe-card-white.gif";
 	swipeGif2.classList.remove("transparent");
 	swipeText2.textContent = "Scroll down to check out my projects!";
 	if (photoChanged) swipeText2.classList.add("typing-effect-green-2");
