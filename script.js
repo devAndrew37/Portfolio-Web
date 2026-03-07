@@ -143,7 +143,7 @@ if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWind
 			swipeFlag = true;
 		}, 2000);
 	}
-	}, 2000);
+	}, 500);
 });
 
 document.addEventListener('visibilitychange', () => {
