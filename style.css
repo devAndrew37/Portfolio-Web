@@ -1144,7 +1144,7 @@ html, body {
 }
 }
 
-@media (min-width: 1024px) and (orientation: landscape) {         /* modo tablet landscape */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) and (hover: none) and (pointer: coarse) {         /* modo tablet landscape */
 html, body {
   width: 2100px;
   height: 1000px;
@@ -1159,8 +1159,6 @@ html, body {
   top: -250px !important;
 }
 }
-
-
 
 @supports (-webkit-touch-callout: none) {
   body.background-change-1a::before,

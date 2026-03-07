@@ -193,6 +193,11 @@ if (isMobilePortrait()) {
   }
 }
 
+const mq = window.matchMedia("(orientation: portrait)");
+mq.addEventListener("change", () => {
+  location.reload();
+});
+
 window.addEventListener("scroll", () => {
 if (!soundWindowFlag || scrollAutomateFlag || card.classList.contains("flipped") || project1.classList.contains("flipped-project") || project2.classList.contains("flipped-project") || project3.classList.contains("flipped-project")) return;
 if (project1.classList.contains("flipped-project-back") || project2.classList.contains("flipped-project-back") || project3.classList.contains("flipped-project-back")) {
