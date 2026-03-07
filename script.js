@@ -30,7 +30,9 @@ const project1 = document.querySelector(".project-card.project1");
 const project2 = document.querySelector(".project-card.project2");
 const project3 = document.querySelector(".project-card.project3");
 const swipeGif = document.querySelector(".swipe-card");
+const swipeGif2 = document.querySelector(".swipe-card-2");
 const swipeText = document.querySelector(".swipe-text");
+const swipeText2 = document.querySelector(".swipe-text-2");
 const backImage = document.getElementById("back-image");
 const portrait = document.getElementById("portrait");
 const pProject1 = document.querySelector(".p-projectcard1");
@@ -76,6 +78,8 @@ let scrollAutomateFlag = false;
 let soundsEnabled = false;
 let soundWindowFlag	= false;
 let scrollingTopFlag = false;
+let resumeWatchedFlag = false;
+let projectsWatchedFlag = false;
 let photoTimeout;
 let timeout1;
 let timeout2;
@@ -127,6 +131,35 @@ document.addEventListener('DOMContentLoaded', () => {
     soundPopup.style.display = 'none';
 	soundWindowFlag = true;
   });
+
+setTimeout(() => {
+if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWindowFlag) {
+		swipeGif.classList.remove("transparent");
+		swipeText.textContent = "Tap on card to check out my resume!";
+		swipeText.classList.add("typing-effect");
+		setTimeout(() => {
+			if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
+			else swipeGif.src = "assets/swipe.png";
+			swipeFlag = true;
+		}, 1900);
+	}
+	}, 2000);
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && isMobilePortrait() && resumeWatchedFlag && !projectsWatchedFlag) {
+	setTimeout(() => {
+	swipeGif2.classList.remove("transparent");
+	swipeText2.textContent = "Scroll down to check out my projects!";
+	if (photoChanged) swipeText2.classList.add("typing-effect-green-2");
+	else swipeText2.classList.add("typing-effect-2");
+	setTimeout(() => {
+		if (bgChangeFlag) swipeGif2.src = "assets/swipe-white.png";
+		else swipeGif2.src = "assets/swipe.png";
+		swipeFlag = true;
+	}, 1900);
+	}, 1000);
+  }
 });
 
 function isMobilePortrait() {
@@ -154,6 +187,7 @@ if (isMobilePortrait()) {
       const index = Array.from(projectCards).indexOf(intersectingEntry.target) + 1;
       if (activeCard !== index) {
         changeBackground(index);
+		removeScrollAnimation();
         activeCard = index;
         blurBackground.style.backdropFilter = 'blur(0px)';
         blurBackground.style.backgroundColor = 'transparent';
@@ -207,16 +241,6 @@ if (project1.classList.contains("flipped-project-back") || project2.classList.co
 	return;
 }
 if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWindowFlag) {
-	setTimeout(() => {
-		swipeGif.classList.remove("transparent");
-		swipeText.textContent = "Tap on card to check out my resume!";
-		swipeText.classList.add("typing-effect");
-		setTimeout(() => {
-			if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
-			else swipeGif.src = "assets/swipe.png";
-			swipeFlag = true;
-		}, 2000);
-	}, 2000);
 		leftAnimationFlag = true;
 		card.classList.add("left");
 		project1.classList.add("left");
@@ -290,8 +314,11 @@ if (card) {
 		download.volume = 0.3;
 		playSound(download);
 		window.open("assets/resume.pdf", "_blank");
+		resumeWatchedFlag = true;
 		clickCardFlag = false;
 		card.classList.remove('flipped');
+		swipeText.textContent = "";
+		swipeGif.classList.add("transparent");
 	}, 1800);
     card.classList.add('flipped');
 	if (sequenceFlag) {
@@ -414,6 +441,14 @@ project3.addEventListener("mouseleave", () => {
 	}
 });
 
+function removeScrollAnimation() {
+	swipeText2.textContent = "";
+	swipeText2.classList.remove("typing-effect-2");
+	swipeText2.classList.remove("typing-effect-green-2");
+	swipeGif2.classList.add("transparent");
+	swipeGif2.src = "assets/swipe-card.gif";
+}
+
 async function delay(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -421,6 +456,7 @@ async function delay(ms) {
 async function moreProjects() {
 	await delay(500);
 	typingFlag = true;
+	projectsWatchedFlag = true;
     typing.volume = 0.4;
     moreProjectsContainer.classList.remove("none");
     playSound(typing);
@@ -435,10 +471,12 @@ async function moreProjects() {
     for (let i = 0; i < steps.length; i++) {
         const current = steps[i];
         current.el.textContent = current.text;
-        current.el.classList.add("typing-effect-word");
+		if (photoChanged) current.el.classList.add("typing-effect-word-green");
+        else current.el.classList.add("typing-effect-word");
         await delay(720);
         if (i < steps.length - 1) {
-            current.el.classList.remove("typing-effect-word");
+    		if (photoChanged) current.el.classList.remove("typing-effect-word-green");
+        	else current.el.classList.remove("typing-effect-word");
 			current.el.style.width = "max-content";
             current.el.style.borderRight = "none";
             current.el.style.width = "auto";
@@ -465,13 +503,18 @@ function changePhotoDelayed() {
 		sequenceStartedFlag = true;
 	}
 	photoChanged = true;
+	if (swipeFlag) swipeGif2.src = "assets/swipe-white.png";
+	else if (!swipeFlag) swipeGif2.src = "assets/swipe-card-white.gif";
 	setTimeout(() => {
 		if (swipeFlag) swipeGif.src = "assets/swipe-white.png";
 		else if (!swipeFlag) swipeGif.src = "assets/swipe-card-white.gif";
 		header.style.backgroundColor = "#2cffcc";
 		footer.style.backgroundColor = "#2cffcc";
 		bgChangeFlag = true;
+		moreProjectsText6.classList.remove("typing-effect-word");
+		moreProjectsText6.classList.add("typing-effect-word-green");
 		swipeText.style.color = "#2cffcc";
+		swipeText2.style.color = "#2cffcc";
 		swipeText.classList.add("typing-effect-green");
 		swipeText.classList.remove("typing-effect");
 		pokemonMusic.pause();
@@ -524,12 +567,23 @@ async function onPortraitMouseLeave() {
 
 function originalPhoto() {
 	if (typingFlag || sequenceFlag) return;
-	if (swipeFlag) swipeGif.src = "assets/swipe.png";
-	else if (!swipeFlag) swipeGif.src = "assets/swipe-card.gif";
+	if (swipeFlag) {
+		swipeGif.src = "assets/swipe.png";
+		swipeGif2.src = "assets/swipe.png";
+	}
+	else if (!swipeFlag) {
+		swipeGif.src = "assets/swipe-card.gif";
+		swipeGif2.src = "assets/swipe-card.gif";
+	}
 	bgChangeFlag = false;
 	swipeText.style.color = "black";
+	swipeText2.style.color = "black";
+	moreProjectsText6.classList.remove("typing-effect-word-green");
+	moreProjectsText6.classList.add("typing-effect-word");
 	swipeText.classList.remove("typing-effect-green");
 	swipeText.classList.add("typing-effect");
+	swipeText2.classList.remove("typing-effect-green-2");
+	swipeText2.classList.add("typing-effect-2");
 	photo.src = "assets/profile.jpeg";
     font1.classList.remove("changed");
 	font2.classList.remove("changed");
@@ -858,16 +912,6 @@ function removeBackground() {
 	project3.classList.remove("transparent-card");
 	document.body.classList.remove("background-transition-left");
 	document.body.classList.remove("background-transition-right");
-  setTimeout(() => {
-	swipeGif.classList.remove("transparent");
-	swipeText.textContent = "Click on card to check out my resume!";
-	swipeText.classList.add("typing-effect");
-	setTimeout(() => {
-		if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
-		else swipeGif.src = "assets/swipe.png";
-		swipeFlag = true;
-	}, 2000);
-  }, 1500);
   	if (isMobilePortrait() && photoChanged) {
 		border.style.borderColor = "white";
 		font7.classList.add("changed");
@@ -876,6 +920,18 @@ function removeBackground() {
 	border.style.borderColor = "black";
 	font7.classList.remove("changed");
 	font7.classList.remove("transparent");
+	if (!isMobilePortrait()) {
+		setTimeout(() => {
+			swipeGif.classList.remove("transparent");
+			swipeText.textContent = "Click on card to check out my resume!";
+			swipeText.classList.add("typing-effect");
+			setTimeout(() => {
+				if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
+				else swipeGif.src = "assets/swipe.png";
+				swipeFlag = true;
+			}, 2000);
+		}, 1500);
+}
 }
 
 async function scrollToTop() {
