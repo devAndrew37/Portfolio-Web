@@ -141,7 +141,7 @@ if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWind
 			if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
 			else swipeGif.src = "assets/swipe.png";
 			swipeFlag = true;
-		}, 1900);
+		}, 2000);
 	}
 	}, 2000);
 });
@@ -157,7 +157,7 @@ document.addEventListener('visibilitychange', () => {
 		if (bgChangeFlag) swipeGif2.src = "assets/swipe-white.png";
 		else swipeGif2.src = "assets/swipe.png";
 		swipeFlag = true;
-	}, 1900);
+	}, 2000);
 	}, 1000);
   }
 });
