@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 setTimeout(() => {
-if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWindowFlag) {
+if (isMobilePortrait() && soundWindowFlag) {
 		swipeGif.classList.remove("transparent");
 		swipeText.textContent = "Tap on card to check out my resume!";
 		swipeText.classList.add("typing-effect");
@@ -143,7 +143,7 @@ if (isMobilePortrait() && !leftAnimationFlag && !scrollAutomateFlag && soundWind
 			swipeFlag = true;
 		}, 2000);
 	}
-	}, 500);
+	}, 1000);
 });
 
 document.addEventListener('visibilitychange', () => {
