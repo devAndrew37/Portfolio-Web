@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('soundPreference', 'true');
     soundPopup.style.display = 'none';
 	soundWindowFlag = true;
+	showSwipeHint();
   });
 
   document.getElementById('decline-button').addEventListener('click', () => {
@@ -130,21 +131,23 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('soundPreference', 'false');
     soundPopup.style.display = 'none';
 	soundWindowFlag = true;
+	showSwipeHint();
   });
-
-setTimeout(() => {
-if (isMobilePortrait() && soundWindowFlag) {
-		swipeGif.classList.remove("transparent");
-		swipeText.textContent = "Tap on card to check out my resume!";
-		swipeText.classList.add("typing-effect");
-		setTimeout(() => {
-			if (bgChangeFlag) swipeGif.src = "assets/swipe-white.png";
-			else swipeGif.src = "assets/swipe.png";
-			swipeFlag = true;
-		}, 2000);
-	}
-	}, 1000);
 });
+
+function showSwipeHint() {
+  setTimeout(() => {
+    if (isMobilePortrait() && soundWindowFlag) {
+      swipeGif.classList.remove("transparent");
+      swipeText.textContent = "Tap on card to check out my resume!";
+      swipeText.classList.add("typing-effect");
+      setTimeout(() => {
+        swipeGif.src = bgChangeFlag ? "assets/swipe-white.png" : "assets/swipe.png";
+        swipeFlag = true;
+      }, 2000);
+    }
+  }, 1000);
+}
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && isMobilePortrait() && resumeWatchedFlag && !projectsWatchedFlag) {
